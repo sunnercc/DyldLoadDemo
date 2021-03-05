@@ -9,7 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
+void RegisterInjected() {
+#if DEBUG
+    [[NSBundle bundleWithPath:@"/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle"] load];
+#endif
+}
+
 int main(int argc, char * argv[]) {
+    RegisterInjected();
     NSString * appDelegateClassName;
     @autoreleasepool {
         // Setup code that might create autoreleased objects goes here.

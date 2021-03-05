@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4089F49F25F29553001031E8 /* InjectionIII.app in Resources */ = {isa = PBXBuildFile; fileRef = 4089F49E25F29553001031E8 /* InjectionIII.app */; };
+		4089F4A425F29BE1001031E8 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 4089F4A325F29BE1001031E8 /* Test.m */; };
 		40C2419325F2780B0077E45B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C2419225F2780B0077E45B /* AppDelegate.m */; };
 		40C2419625F2780B0077E45B /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C2419525F2780B0077E45B /* SceneDelegate.m */; };
 		40C2419925F2780B0077E45B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C2419825F2780B0077E45B /* ViewController.m */; };
@@ -36,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4089F49E25F29553001031E8 /* InjectionIII.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = InjectionIII.app; sourceTree = "<group>"; };
+		4089F4A125F297D3001031E8 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
+		4089F4A225F29BE1001031E8 /* Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
+		4089F4A325F29BE1001031E8 /* Test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 		40C2418E25F2780B0077E45B /* DyldLoadDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DyldLoadDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C2419125F2780B0077E45B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		40C2419225F2780B0077E45B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -81,9 +87,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4089F4A025F297BC001031E8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4089F49E25F29553001031E8 /* InjectionIII.app */,
+				4089F4A125F297D3001031E8 /* Header.h */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		40C2418525F2780B0077E45B = {
 			isa = PBXGroup;
 			children = (
+				4089F4A025F297BC001031E8 /* Resources */,
 				40C2419025F2780B0077E45B /* DyldLoadDemo */,
 				40C241AC25F2780E0077E45B /* DyldLoadDemoTests */,
 				40C241B725F2780E0077E45B /* DyldLoadDemoUITests */,
@@ -115,6 +131,8 @@
 				40C2419F25F2780E0077E45B /* LaunchScreen.storyboard */,
 				40C241A225F2780E0077E45B /* Info.plist */,
 				40C241A325F2780E0077E45B /* main.m */,
+				4089F4A225F29BE1001031E8 /* Test.h */,
+				4089F4A325F29BE1001031E8 /* Test.m */,
 			);
 			path = DyldLoadDemo;
 			sourceTree = "<group>";
@@ -241,6 +259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				40C241A125F2780E0077E45B /* LaunchScreen.storyboard in Resources */,
+				4089F49F25F29553001031E8 /* InjectionIII.app in Resources */,
 				40C2419E25F2780E0077E45B /* Assets.xcassets in Resources */,
 				40C2419C25F2780B0077E45B /* Main.storyboard in Resources */,
 			);
@@ -267,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4089F4A425F29BE1001031E8 /* Test.m in Sources */,
 				40C2419925F2780B0077E45B /* ViewController.m in Sources */,
 				40C2419325F2780B0077E45B /* AppDelegate.m in Sources */,
 				40C241A425F2780E0077E45B /* main.m in Sources */,
@@ -446,6 +466,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-interposable",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = sunner.DyldLoadDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -462,6 +486,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-interposable",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = sunner.DyldLoadDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";

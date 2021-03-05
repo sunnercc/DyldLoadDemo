@@ -1,0 +1,462 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target arm64-apple-tvos12.4-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name SwiftTrace
+import Foundation
+import Swift
+@_exported import SwiftTrace
+import UIKit
+public func getOptionalType<Type>(value: Type, out: inout Any.Type?)
+public func getArrayType<Type>(value: Type, out: inout Any.Type?)
+public func getArraySliceType<Type>(value: Type, out: inout Any.Type?)
+public func getDictionaryType<Type>(value: Type, out: inout Any.Type?)
+public func getSetType<Type>(value: Type, out: inout Any.Type?) where Type : Swift.Hashable
+@available(OSX 10.12, iOS 10.0, *)
+public func getMeasurementType<Type>(value: Type, out: inout Any.Type?) where Type : Foundation.Unit
+@_hasMissingDesignatedInitializers public class SwiftMeta {
+  public class func sizeof(anyType: Any.Type) -> Darwin.size_t
+  public class func strideof(anyType: Any.Type) -> Darwin.size_t
+  public typealias FunctionTakingGenericValue = @convention(c) (Swift.UnsafeRawPointer?, Swift.UnsafeMutableRawPointer, Swift.UnsafeRawPointer, Swift.UnsafeRawPointer?) -> ()
+  public static func thunkToGeneric(funcPtr: @convention(c) (Swift.UnsafeRawPointer?, Swift.UnsafeMutableRawPointer, Swift.UnsafeRawPointer, Swift.UnsafeRawPointer?) -> (), valuePtr: Swift.UnsafeRawPointer?, outPtr: Swift.UnsafeMutableRawPointer, type: Any.Type, witnessTable: Swift.UnsafeRawPointer? = nil)
+  public static func mangle(_ name: Swift.String) -> Swift.String
+  public static func bindGeneric(name: Swift.String, owner: Any.Type = SwiftMeta.self, args: Swift.String = returnAnyType) -> SwiftMeta.FunctionTakingGenericValue
+  public static let returnAnyType: Swift.String
+  public static var wrapperHandlers: [Swift.String : SwiftMeta.FunctionTakingGenericValue]
+  public static var nameAbbreviations: [Swift.String : Swift.String]
+  public static var typeLookupCache: [Swift.String : Any.Type?]
+  public static let PreventLookup: Any.Type?
+  public static func lookupType(named: Swift.String, exclude: Foundation.NSRegularExpression? = nil) -> Any.Type?
+  public static func mangledName(for type: Any.Type) -> Swift.String?
+  public struct FieldInfo {
+  }
+  public static func fieldInfo(forAnyType: Any.Type) -> [SwiftMeta.FieldInfo]?
+  public static var structsPassedByReference: Swift.Set<Swift.UnsafeRawPointer>
+  public static func process(bundlePath: Swift.UnsafePointer<Swift.Int8>, problemTypes: Swift.UnsafeMutablePointer<Swift.Set<Swift.UnsafeRawPointer>>)
+  public typealias SIMP = @convention(c) () -> Swift.Void
+  public struct TargetClassMetadata {
+    public let Data: Darwin.uintptr_t
+    public let Flags: Swift.UInt32
+    public let InstanceAddressPoint: Swift.UInt32
+    public let InstanceSize: Swift.UInt32
+    public let InstanceAlignMask: Swift.UInt16
+    public let Reserved: Swift.UInt16
+    public let ClassSize: Swift.UInt32
+    public let ClassAddressPoint: Swift.UInt32
+    public let Description: Darwin.uintptr_t
+    public var IVarDestroyer: SwiftMeta.SIMP?
+  }
+  @objc open class func demangle(symbol: Swift.UnsafePointer<Swift.Int8>) -> Swift.String?
+  @objc deinit
+}
+extension SwiftTraceArg {
+  public func add(toCall call: SwiftTrace.Call)
+}
+extension SwiftTrace {
+  @objc @_inheritsConvenienceInitializers public class Call : SwiftTrace.Swizzle {
+    public var input: SwiftTrace.EntryStack
+    public var output: SwiftTrace.ExitStack
+    public init?(target: Swift.AnyObject, methodName: Swift.String)
+    required public init?(name signature: Swift.String, vtableSlot: Swift.UnsafeMutablePointer<SwiftTrace.SIMP>? = nil, objcMethod: ObjectiveC.Method? = nil, objcClass: Swift.AnyClass? = nil, original: Swift.OpaquePointer? = nil, replaceWith: SwiftTrace.nullImplementationType? = nil)
+    public func reset(target: Swift.AnyObject)
+    public var intArgNumber: Swift.Int
+    public var floatArgNumber: Swift.Int
+    public func resetArgs()
+    public func add<T>(arg: T)
+    public func invoke()
+    override public func onEntry(stack: inout SwiftTrace.EntryStack)
+    override public func onExit(stack: inout SwiftTrace.ExitStack)
+    public func getReturn<T>() -> T
+    @objc deinit
+  }
+  open class func invoke<T>(target: Swift.AnyObject, methodName: Swift.String, args: Any...) -> T
+}
+extension SwiftTrace {
+  public typealias SIMP = SwiftMeta.SIMP
+  @objc public static var logOutput: (Swift.String) -> ()
+  @objc dynamic open class var traceFilterInclude: Swift.String? {
+    @objc get
+    @objc set(pattern)
+  }
+  @objc dynamic open class var traceFilterExclude: Swift.String? {
+    @objc get
+    @objc set(pattern)
+  }
+  @objc open class Swizzle : ObjectiveC.NSObject {
+    final public let signature: Swift.String
+    final public let nullImplmentation: SwiftTrace.nullImplementationType?
+    open var invocationFactory: SwiftTrace.Swizzle.Invocation.Type {
+      get
+    }
+    open func invocation() -> SwiftTrace.Swizzle.Invocation!
+    required public init?(name signature: Swift.String, vtableSlot: Swift.UnsafeMutablePointer<SwiftTrace.SIMP>? = nil, objcMethod: ObjectiveC.Method? = nil, objcClass: Swift.AnyClass? = nil, original: Swift.OpaquePointer? = nil, replaceWith: SwiftTrace.nullImplementationType? = nil)
+    open var forwardingImplementation: SwiftTrace.SIMP {
+      get
+      set
+    }
+    open func onEntry(stack: inout SwiftTrace.EntryStack)
+    open func entryDecorate(stack: inout SwiftTrace.EntryStack) -> Swift.String
+    open func subLogging() -> Swift.Bool
+    open func onExit(stack: inout SwiftTrace.ExitStack)
+    open func exitDecorate(stack: inout SwiftTrace.ExitStack) -> Swift.String
+    open func objcAdjustStret(invocation: SwiftTrace.Swizzle.Invocation, isReturn: Swift.Bool, intArgs: Swift.UnsafePointer<Darwin.intptr_t>) -> Swift.Bool
+    open func remove()
+    open func removeAll()
+    open func getSelf<T>(as: T.Type = T.self) -> T
+    open func getClass() -> Swift.AnyClass
+    open func structReturn<T>(as: T.Type = T.self) -> Swift.UnsafeMutablePointer<T>
+    open func rebind<IN, OUT>(_ pointer: Swift.UnsafeMutablePointer<IN>, to: OUT.Type = OUT.self) -> Swift.UnsafeMutablePointer<OUT>
+    public class Invocation {
+      final public let timeEntered: Swift.Double
+      final public let stackDepth: Swift.Int
+      final public let swizzle: SwiftTrace.Swizzle
+      public var decorated: Swift.String?
+      public var arguments: [Any]
+      final public let returnAddress: Swift.UnsafeRawPointer
+      public var saveLevelsTracing: Swift.Int
+      public var intArgumentOffset: Swift.Int
+      public var floatArgumentOffset: Swift.Int
+      public var subLogged: Swift.Bool
+      public var shouldDecorate: Swift.Bool {
+        get
+        set
+      }
+      final public let entryStack: Swift.UnsafeMutablePointer<SwiftTrace.EntryStack>
+      public var exitStack: Swift.UnsafeMutablePointer<SwiftTrace.ExitStack> {
+        get
+      }
+      public var structReturn: Swift.UnsafeMutableRawPointer?
+      public var swiftSelf: Darwin.intptr_t
+      public var userInfo: Swift.AnyObject?
+      public static func usecTime() -> Swift.Double
+      required public init(stackDepth: Swift.Int, swizzle: SwiftTrace.Swizzle, returnAddress: Swift.UnsafeRawPointer, stackPointer: Swift.UnsafeMutablePointer<Swift.UInt64>)
+      public static var current: SwiftTrace.Swizzle.Invocation! {
+        get
+      }
+      @objc deinit
+    }
+    @_hasMissingDesignatedInitializers public class ThreadLocal {
+      public var invocationStack: [SwiftTrace.Swizzle.Invocation]
+      public var describing: Swift.Bool
+      public var levelsTracing: Swift.Int
+      public static func current() -> SwiftTrace.Swizzle.ThreadLocal
+      public func caller() -> SwiftTrace.Swizzle.Invocation?
+      @objc deinit
+    }
+    @objc override dynamic public init()
+    @objc deinit
+  }
+}
+public protocol SwiftTraceArg {
+}
+public protocol SwiftTraceFloatArg : SwiftTraceArg {
+}
+extension Bool : SwiftTraceArg {
+}
+extension Int : SwiftTraceArg {
+}
+extension UInt : SwiftTraceArg {
+}
+extension Int8 : SwiftTraceArg {
+}
+extension UInt8 : SwiftTraceArg {
+}
+extension Int16 : SwiftTraceArg {
+}
+extension UInt16 : SwiftTraceArg {
+}
+extension Int32 : SwiftTraceArg {
+}
+extension UInt32 : SwiftTraceArg {
+}
+extension Int64 : SwiftTraceArg {
+}
+extension UInt64 : SwiftTraceArg {
+}
+extension UnsafePointer : SwiftTraceArg {
+}
+extension UnsafeMutablePointer : SwiftTraceArg {
+}
+extension String : SwiftTraceArg {
+}
+extension Double : SwiftTraceFloatArg {
+}
+extension Float : SwiftTraceFloatArg {
+}
+extension CGFloat : SwiftTraceFloatArg {
+}
+extension CGPoint : SwiftTraceFloatArg {
+}
+extension CGSize : SwiftTraceFloatArg {
+}
+extension CGRect : SwiftTraceFloatArg {
+}
+extension UIEdgeInsets : SwiftTraceFloatArg {
+}
+public func appender<Type>(value: Type, out: inout [Any])
+public func describer<Type>(value: Type, out: inout Swift.String)
+extension SwiftTrace {
+  @objc public static var typeLookup: Swift.Bool
+  @objc public static var decorateAny: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc public static var maxIntegerArgumentSlots: Swift.Int
+  @objc public static var maxArgumentDescriptionBytes: Swift.Int
+  @objc dynamic open class var defaultLookupExclusions: Swift.String {
+    @objc get
+  }
+  @objc dynamic open class var lookupExclusionPattern: Swift.String? {
+    @objc get
+    @objc set(newValue)
+  }
+  open class func makeTraceable(types: [Any.Type])
+  @objc dynamic open class func makeUntracable(typesNamed: [Swift.String])
+  @objc dynamic open class func trace(name signature: Swift.String, vtableSlot: Swift.UnsafeMutablePointer<SwiftTrace.SIMP>? = nil, objcMethod: ObjectiveC.Method? = nil, objcClass: Swift.AnyClass? = nil, original: Swift.UnsafeRawPointer) -> SwiftTrace.SIMP?
+  @objc @_inheritsConvenienceInitializers open class Decorated : SwiftTrace.Swizzle {
+    open func ranges(in signature: Swift.String, parser: Foundation.NSRegularExpression) -> [(range: Swift.Range<Swift.String.Index>, type: Any.Type?)]
+    override open func entryDecorate(stack: inout SwiftTrace.EntryStack) -> Swift.String
+    override open func exitDecorate(stack: inout SwiftTrace.ExitStack) -> Swift.String
+    open var arguments: [Any] {
+      get
+    }
+    open func swiftDecorate(signature: Swift.String, invocation: SwiftTrace.Swizzle.Invocation, parser: Foundation.NSRegularExpression) -> Swift.String
+    public static var swiftTypeHandlers: [Swift.String : (SwiftTrace.Swizzle.Invocation, Swift.Bool) -> Swift.String?]
+    open func objcDecorate(signature: Swift.String?, invocation: SwiftTrace.Swizzle.Invocation) -> Swift.String
+    public static var objcTypeHandlers: [Swift.String : (SwiftTrace.Swizzle.Invocation, Swift.Bool) -> Swift.String?]
+    public static func handleArg(invocation: SwiftTrace.Swizzle.Invocation, isReturn: Swift.Bool, type: Any.Type) -> Swift.String?
+    @objc deinit
+    required public init?(name signature: Swift.String, vtableSlot: Swift.UnsafeMutablePointer<SwiftTrace.SIMP>? = super, objcMethod: ObjectiveC.Method? = super, objcClass: Swift.AnyClass? = super, original: Swift.OpaquePointer? = super, replaceWith: SwiftTrace.nullImplementationType? = super)
+  }
+}
+public func autoBitCast<IN, OUT>(_ x: IN) -> OUT
+extension UnsafePointer {
+  public init<IN>(cast: Swift.UnsafePointer<IN>)
+  public init<IN>(cast: Swift.UnsafeMutablePointer<IN>)
+  public init(cast: Swift.UnsafeMutableRawPointer)
+  public init(cast: Swift.UnsafeRawPointer)
+  public init(cast: Swift.OpaquePointer)
+  public static func == (lhs: Swift.UnsafePointer<Pointee>, rhs: Swift.UnsafeMutablePointer<Pointee>) -> Swift.Bool
+  public static func == (lhs: Swift.UnsafeMutablePointer<Pointee>, rhs: Swift.UnsafePointer<Pointee>) -> Swift.Bool
+  public static func < (lhs: Swift.UnsafePointer<Pointee>, rhs: Swift.UnsafeMutablePointer<Pointee>) -> Swift.Bool
+  public static func < (lhs: Swift.UnsafeMutablePointer<Pointee>, rhs: Swift.UnsafePointer<Pointee>) -> Swift.Bool
+}
+extension UnsafeMutablePointer {
+  public init<IN>(cast: Swift.UnsafeMutablePointer<IN>)
+  public init(mutating cast: Swift.UnsafeRawPointer)
+  public init(cast: Swift.UnsafeMutableRawPointer)
+  public init(cast: Swift.OpaquePointer)
+}
+public func + (index: Swift.String.Index?, offset: Swift.Int) -> Swift.String.OffsetIndex
+public func - (index: Swift.String.Index?, offset: Swift.Int) -> Swift.String.OffsetIndex
+public func + (index: Swift.String.Index?, offset: Swift.String.OffsetIndex) -> Swift.String.OffsetIndex
+public func ..< (lhs: Swift.String.OffsetIndex, rhs: Swift.String.Index?) -> Swift.Range<Swift.String.OffsetIndex>
+public func ..< (lhs: Swift.String.Index?, rhs: Swift.String.OffsetIndex) -> Swift.Range<Swift.String.OffsetIndex>
+extension Range where Bound == Swift.String.Index {
+  public init?<S>(_ range: Swift.Range<Swift.String.OffsetIndex>, in string: S) where S : Swift.StringProtocol
+}
+extension _NSRange {
+  public init?<S>(_ range: Swift.Range<Swift.String.OffsetIndex>, in string: S) where S : Swift.StringProtocol
+}
+extension String {
+  indirect public enum OffsetIndex : Swift.Comparable {
+    case offsetIndex(index: Swift.String.Index?, offset: Swift.Int), start, end, first(of: Swift.String, regex: Swift.Bool = false, end: Swift.Bool = false), last(of: Swift.String, regex: Swift.Bool = false, end: Swift.Bool = false), either(_: Swift.String.OffsetIndex, or: Swift.String.OffsetIndex), chained(previous: Swift.String.OffsetIndex, next: Swift.String.OffsetIndex?, offset: Swift.Int)
+    public static func + (index: Swift.String.OffsetIndex, offset: Swift.Int) -> Swift.String.OffsetIndex
+    public static func - (index: Swift.String.OffsetIndex, offset: Swift.Int) -> Swift.String.OffsetIndex
+    public static func + (index: Swift.String.OffsetIndex, offset: Swift.String.OffsetIndex) -> Swift.String.OffsetIndex
+    public static func < (lhs: Swift.String.OffsetIndex, rhs: Swift.String.OffsetIndex) -> Swift.Bool
+    public static func == (a: Swift.String.OffsetIndex, b: Swift.String.OffsetIndex) -> Swift.Bool
+  }
+}
+extension StringProtocol {
+  public typealias OffsetIndex = Swift.String.OffsetIndex
+  public typealias OISubstring = Swift.String
+  public typealias OOISubstring = Self.OISubstring?
+  public func index(of offset: Self.OffsetIndex, from: Self.Index? = nil) -> Self.Index?
+  public func safeIndex(_ from: Self.Index, offsetBy: Swift.Int) -> Self.Index?
+  public func locate(target: Swift.String, from: Self.Index?, last: Swift.Bool, regex: Swift.Bool, end: Swift.Bool) -> Self.Index?
+  public subscript(offset: Self.OffsetIndex) -> Swift.Character {
+    get
+    set(newValue)
+  }
+  public subscript(range: Swift.Range<Self.OffsetIndex>) -> Self.OISubstring {
+    get
+    set(newValue)
+  }
+  public subscript(range: Swift.PartialRangeUpTo<Self.OffsetIndex>) -> Self.OISubstring {
+    get
+    set(newValue)
+  }
+  public subscript(range: Swift.PartialRangeFrom<Self.OffsetIndex>) -> Self.OISubstring {
+    get
+    set(newValue)
+  }
+  public subscript(safe offset: Self.OffsetIndex) -> Swift.Character? {
+    get
+    set(newValue)
+  }
+  public subscript(safe range: Swift.Range<Self.OffsetIndex>) -> Self.OOISubstring {
+    get
+    set(newValue)
+  }
+  public subscript(safe range: Swift.PartialRangeUpTo<Self.OffsetIndex>) -> Self.OOISubstring {
+    get
+    set(newValue)
+  }
+  public subscript(safe range: Swift.PartialRangeFrom<Self.OffsetIndex>) -> Self.OOISubstring {
+    get
+    set(newValue)
+  }
+  public mutating func replaceSubrange<C>(_ bounds: Swift.Range<Self.OffsetIndex>, with newElements: C) where C : Swift.Collection, C.Element == Swift.Character
+  public mutating func insert<S>(contentsOf newElements: S, at i: Self.OffsetIndex) where S : Swift.Collection, S.Element == Swift.Character
+  public mutating func insert(_ newElement: Swift.Character, at i: Self.OffsetIndex)
+}
+extension SwiftTrace {
+  @objc public static func elapsedTimes() -> [Swift.String : Swift.Double]
+  public static func sortedElapsedTimes(onlyFirst: Swift.Int? = nil) -> [(key: Swift.String, value: Foundation.TimeInterval)]
+  @objc public static func invocationCounts() -> [Swift.String : Swift.Int]
+  public static func sortedInvocationCounts(onlyFirst: Swift.Int? = nil) -> [(key: Swift.String, value: Swift.Int)]
+  @objc public static func callOrder() -> [SwiftTrace.Swizzle]
+}
+extension SwiftTrace {
+  public typealias EntryAspect = (SwiftTrace.Swizzle, inout SwiftTrace.EntryStack) -> Swift.Void
+  public typealias ExitAspect = (SwiftTrace.Swizzle, inout SwiftTrace.ExitStack) -> Swift.Void
+  open class func addAspect(methodName: Swift.String, patchClass: SwiftTrace.Aspect.Type = Aspect.self, onEntry: SwiftTrace.EntryAspect? = nil, onExit: SwiftTrace.ExitAspect? = nil, replaceWith: SwiftTrace.nullImplementationType? = nil) -> Swift.Bool
+  open class func addAspect(aClass: Swift.AnyClass, methodName: Swift.String, patchClass: SwiftTrace.Aspect.Type = Aspect.self, onEntry: SwiftTrace.EntryAspect? = nil, onExit: SwiftTrace.ExitAspect? = nil, replaceWith: SwiftTrace.nullImplementationType? = nil) -> Swift.Bool
+  @objc @discardableResult
+  dynamic open class func removeAspect(methodName: Swift.String) -> Swift.Bool
+  @objc @discardableResult
+  dynamic open class func removeAspect(aClass: Swift.AnyClass, methodName: Swift.String) -> Swift.Bool
+  @objc @_inheritsConvenienceInitializers open class Aspect : SwiftTrace.Decorated {
+    required public init?(name: Swift.String, vtableSlot: Swift.UnsafeMutablePointer<SwiftTrace.SIMP>? = nil, original: Swift.OpaquePointer? = nil, onEntry: SwiftTrace.EntryAspect? = nil, onExit: SwiftTrace.ExitAspect? = nil, replaceWith: SwiftTrace.nullImplementationType? = nil)
+    required public init?(name: Swift.String, vtableSlot: Swift.UnsafeMutablePointer<SwiftTrace.SIMP>? = nil, objcMethod: ObjectiveC.Method? = nil, objcClass: Swift.AnyClass?, original: Swift.OpaquePointer? = nil, replaceWith: SwiftTrace.nullImplementationType? = nil)
+    override open func onEntry(stack: inout SwiftTrace.EntryStack)
+    override open func onExit(stack: inout SwiftTrace.ExitStack)
+    @objc deinit
+  }
+}
+extension SwiftTrace {
+  @objc public static var swiftFunctionSuffixes: [Swift.String]
+  @objc public static var interposeEclusions: Foundation.NSRegularExpression?
+  open class func interpose(aType: Any.Type, methodName: Swift.String, patchClass: SwiftTrace.Aspect.Type = Aspect.self, onEntry: SwiftTrace.EntryAspect? = nil, onExit: SwiftTrace.ExitAspect? = nil, replaceWith: SwiftTrace.nullImplementationType? = nil)
+  open class func interpose(aBundle: Swift.UnsafePointer<Swift.Int8>?, methodName: Swift.String, patchClass: SwiftTrace.Aspect.Type = Aspect.self, onEntry: SwiftTrace.EntryAspect? = nil, onExit: SwiftTrace.ExitAspect? = nil, replaceWith: SwiftTrace.nullImplementationType? = nil)
+  @objc dynamic open class func interposed(replacee: Swift.UnsafeRawPointer) -> Swift.UnsafeRawPointer?
+  @objc dynamic open class func interposeMethods(inBundlePath: Swift.UnsafePointer<Swift.Int8>, packageName: Swift.String? = nil, subLevels: Swift.Int = 0)
+  @objc dynamic open class func traceMainBundleMethods()
+  @objc dynamic open class func traceMethods(inFrameworkContaining aClass: Swift.AnyClass)
+  @objc dynamic open class func traceFrameworkMethods()
+  open class func apply(interposes: [dyld_interpose_tuple], symbols: [Swift.UnsafePointer<Swift.Int8>], onInjection: ((Swift.UnsafePointer<MachO.mach_header>) -> Swift.Void)? = nil)
+  @objc dynamic open class func revertInterposes()
+}
+extension SwiftTrace {
+  public struct EntryStack {
+    public var floatArg1: Swift.Double
+    public var floatArg2: Swift.Double
+    public var floatArg3: Swift.Double
+    public var floatArg4: Swift.Double
+    public var floatArg5: Swift.Double
+    public var floatArg6: Swift.Double
+    public var floatArg7: Swift.Double
+    public var floatArg8: Swift.Double
+    public var intArg1: Swift.Int
+    public var intArg2: Swift.Int
+    public var intArg3: Swift.Int
+    public var intArg4: Swift.Int
+    public var intArg5: Swift.Int
+    public var intArg6: Swift.Int
+    public var intArg7: Swift.Int
+    public var intArg8: Swift.Int
+    public var structReturn: Swift.Int
+    public var framePointer: Swift.Int
+    public var swiftSelf: Swift.Int
+    public var thrownError: Swift.Int
+  }
+  public struct ExitStack {
+    public var floatReturn1: Swift.Double
+    public var floatReturn2: Swift.Double
+    public var floatReturn3: Swift.Double
+    public var floatReturn4: Swift.Double
+    public var d4: Swift.Double
+    public var d5: Swift.Double
+    public var d6: Swift.Double
+    public var d7: Swift.Double
+    public var intReturn1: Swift.Int
+    public var intReturn2: Swift.Int
+    public var intReturn3: Swift.Int
+    public var intReturn4: Swift.Int
+    public var x4: Swift.Int
+    public var x5: Swift.Int
+    public var x6: Swift.Int
+    public var x7: Swift.Int
+    public var structReturn: Swift.Int
+    public var framePointer: Swift.Int
+    public var swiftSelf: Swift.Int
+    public var thrownError: Swift.Int
+  }
+}
+extension SwiftTrace.EntryStack {
+  public var invocation: SwiftTrace.Swizzle.Invocation! {
+    get
+  }
+}
+extension SwiftTrace.ExitStack {
+  public var invocation: SwiftTrace.Swizzle.Invocation! {
+    get
+  }
+  public mutating func genericReturn<T>(swizzle: SwiftTrace.Swizzle? = nil, to: Any.Type = T.self) -> Swift.UnsafeMutablePointer<T>
+  public mutating func getReturn<T>() -> T
+  public mutating func setReturn<T>(value: T)
+  public mutating func stringReturn() -> Swift.String
+}
+@objc(SwiftTrace) @objcMembers open class SwiftTrace : ObjectiveC.NSObject {
+  @objc public static var timeFormat: Swift.String
+  @objc public static var identifyFormat: Swift.String
+  @objc public static var traceIndent: Swift.String
+  @objc public static var swizzleFactory: SwiftTrace.Swizzle.Type
+  public static var defaultInvocationFactory: SwiftTrace.Swizzle.Invocation.Type
+  public typealias nullImplementationType = @convention(c) () -> Swift.AnyObject?
+  @objc public static var lastSwiftTrace: SwiftTrace
+  @objc public class var interposedPointer: Swift.UnsafeMutableRawPointer {
+    @objc get
+  }
+  @objc public class var isTracing: Swift.Bool {
+    @objc get
+  }
+  @objc required public init(previous: SwiftTrace?, subLevels: Swift.Int)
+  @objc @discardableResult
+  open class func startNewTrace(subLevels: Swift.Int) -> SwiftTrace
+  @objc open func mutePreviousUnfiltered()
+  @objc open class var defaultMethodExclusions: Swift.String {
+    @objc get
+  }
+  @objc open class var methodExclusionPattern: Swift.String? {
+    @objc get
+    @objc set(newValue)
+  }
+  @objc open class var methodInclusionPattern: Swift.String? {
+    @objc get
+    @objc set(newValue)
+  }
+  @objc open class var methodFilter: (Swift.String) -> SwiftTrace.Swizzle.Type? {
+    @objc get
+    @objc set(newValue)
+  }
+  @objc open class func traceBundle(containing theClass: Swift.AnyClass? = nil, subLevels: Swift.Int = 0)
+  @objc open class func traceMainBundle(subLevels: Swift.Int = 0)
+  @discardableResult
+  open class func forAllClasses(bundlePath: Swift.UnsafePointer<Swift.Int8>? = nil, callback: @escaping (Swift.AnyClass, inout Swift.Bool) -> Swift.Void) -> Swift.Bool
+  @objc open class func trace(bundlePath: Swift.UnsafePointer<Swift.Int8>?, subLevels: Swift.Int = 0)
+  @objc open class func swiftClassList(bundlePath: Swift.UnsafePointer<Swift.Int8>? = nil) -> [Swift.AnyClass]
+  @objc open class func traceClasses(matchingPattern pattern: Swift.String, subLevels: Swift.Int = 0)
+  @objc open class func trace(aClass: Swift.AnyClass)
+  @objc open class func traceInstances(ofClass aClass: Swift.AnyClass, subLevels: Swift.Int = 0)
+  @objc open class func trace(anInstance: Swift.AnyObject, subLevels: Swift.Int = 0)
+  @discardableResult
+  open class func iterateMethods(ofClass aClass: Swift.AnyClass, callback: (Swift.String, Swift.Int, Swift.UnsafeMutablePointer<SwiftTrace.SIMP>, inout Swift.Bool) -> Swift.Void) -> Swift.Bool
+  @objc open class func traceProtocolsInBundle(containing aClass: Swift.AnyClass? = nil, matchingPattern: Swift.String? = nil, subLevels: Swift.Int = 0)
+  @objc open class func originalSwizzle(for implementation: ObjectiveC.IMP) -> SwiftTrace.Swizzle?
+  @objc open class func methodNames(ofClass: Swift.AnyClass) -> [Swift.String]
+  @objc open class func undoLastTrace() -> Swift.Bool
+  @objc open class func removeAllTraces()
+  @objc open func removeSwizzles()
+  @objc override dynamic public init()
+  @objc deinit
+}
